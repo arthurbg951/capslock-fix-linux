@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=caps-fix-linux
+Comment=This code fixes the linux delay on caps lock key
+Exec=/home/arthur/.local/bin/caps-fix-linux
+Icon=terminal
+Terminal=false
+Type=Application
+NoDisplay=true
+Categories=Application;
+X-GNOME-Autostart-enabled=true
