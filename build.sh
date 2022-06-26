@@ -1,2 +1,2 @@
-dotnet publish ./caps-fix-linux.csproj -r linux-x64 --self-contained -c Release -o /home/arthur/.local/bin /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /property:GenerateFullPaths=true /consoleloggerparameters:NoSummary
-rm -r /home/arthur/.local/bin/caps-fix-linux.pdb
+dotnet publish ./src/caps-fix.csproj -r linux-x64 --self-contained -c Release -o ./build/ /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /property:GenerateFullPaths=true /consoleloggerparameters:NoSummary
+rm -r ./build/*.pdb

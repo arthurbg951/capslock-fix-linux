@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=caps-fix-linux
-Comment=This code fixes the linux delay on caps lock key
-Exec=/home/arthur/.local/bin/caps-fix-linux
+Name=caps-fix
+Comment=This program fixes the linux delay on caps lock key
+Exec=$HOME/.local/bin/caps-fix
 Icon=terminal
 Terminal=false
 Type=Application

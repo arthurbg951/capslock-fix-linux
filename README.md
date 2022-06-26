@@ -5,19 +5,23 @@ If you dont wanna use shift key this program will help you.
 
 ## Require
 
-You will need to search how to install dotnet-sdk-6.0 on your machine to use build script
+You will need <a href="https://dotnet.microsoft.com/en-us/download">dotnet-sdk-6.0</a> on your machine to use build script
 
 ## Build
 
-Clone this repository with
+Clone this repository with:
 
-git clone https://
+git clone https://github.com/arthurbg951/capslock-fix-linux.git
 
 Give permission to build.sh script with:
 
 chmod +x ./build.sh
 
-Give permission to install.sh script with if you wanna install the programm in your machine and add it to startup:
+Then run the script:
+
+./build.sh
+
+Give permission to install.sh script with if you wanna install the programm in your machine and add it to startup: 
 
 chmod +x ./install.sh
 
