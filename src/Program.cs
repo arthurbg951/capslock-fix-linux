@@ -10,7 +10,7 @@ namespace caps_fix_linux
         static void Main()
         {
             string userFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            string assemblyPath = Assembly.GetExecutingAssembly().Location;
+            string assemblyPath = Assembly.GetEntryAssembly().Location == "" ? userFolderPath : Assembly.GetExecutingAssembly().Location;
             string defaultTerminal = "bash";
             Console.WriteLine("User Path: " + userFolderPath);
             Console.WriteLine("Assembly Path: " + assemblyPath);
@@ -36,7 +36,7 @@ namespace caps_fix_linux
                 string outFile = $"{mapFileName}";
                 byte count = 5;
                 Console.WriteLine($"Waiting for outFile");
-                while (count >= 0)
+                while (count > 0)
                 {
                     if (File.Exists(mapFileName))
                     {
@@ -71,11 +71,10 @@ namespace caps_fix_linux
                         Thread.Sleep(10);
                         count--;
                     }
-
                 }
 
                 count = 5;
-                while (count >= 0)
+                while (count > 0)
                 {
                     if (File.Exists(outFile))
                     {
@@ -94,7 +93,10 @@ namespace caps_fix_linux
             {
                 Console.WriteLine(e.Message);
             }
-            Console.WriteLine("You can try to use your Caps Lock as you want. ;)");
+            finally
+            {
+                Console.WriteLine("You can try to use your Caps Lock as you want. ;)");
+            }
         }
 
         private static void makeProcess(string program, string args)
