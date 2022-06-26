@@ -10,7 +10,7 @@ namespace caps_fix_linux
         static void Main()
         {
             string userFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            string assemblyPath = Environment.CurrentDirectory;
+            string assemblyPath = Assembly.GetExecutingAssembly().Location;
             string defaultTerminal = "bash";
             Console.WriteLine("User Path: " + userFolderPath);
             Console.WriteLine("Assembly Path: " + assemblyPath);
@@ -49,7 +49,6 @@ namespace caps_fix_linux
                                 if (!line.Contains("key <CAPS>"))
                                 {
                                     sb.AppendLine(line);
-
                                 }
                                 else
                                 {
