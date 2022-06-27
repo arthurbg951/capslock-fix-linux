@@ -21,9 +21,9 @@ Then run the script:
 
 ./build.sh
 
-Give permission to install.sh script with if you wanna install the programm in your machine and add it to startup: 
+<!-- Give permission to install.sh script with if you wanna install the programm in your machine and add it to startup: 
 
-chmod +x ./install.sh
+chmod +x ./install.sh -->
 
 ## Recomendations
 
