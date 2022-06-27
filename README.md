@@ -1,4 +1,4 @@
-## hat is the purpose of the program?
+## What is the purpose of the program?
 
 This program just fix the Caps Lock key Delay on linux.
 If you dont wanna use shift key this program will help you.
