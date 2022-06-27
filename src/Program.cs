@@ -10,7 +10,7 @@ namespace caps_fix_linux
         static void Main()
         {
             string userFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            string assemblyPath = Assembly.GetEntryAssembly().Location == "" ? userFolderPath : Assembly.GetExecutingAssembly().Location;
+            string assemblyPath = Assembly.GetCallingAssembly().Location  == "" ? "." : Assembly.GetCallingAssembly().Location;
             string defaultTerminal = "bash";
             Console.WriteLine("User Path: " + userFolderPath);
             Console.WriteLine("Assembly Path: " + assemblyPath);
