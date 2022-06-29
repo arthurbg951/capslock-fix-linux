@@ -10,18 +10,18 @@ namespace caps_fix_linux
         static void Main()
         {
             string userFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            string assemblyPath = Assembly.GetCallingAssembly().Location  == "" ? "." : Assembly.GetCallingAssembly().Location;
+            string assemblyPath = AppContext.BaseDirectory.Replace(Assembly.GetExecutingAssembly().GetName().ToString(), "");
             string defaultTerminal = "bash";
-            Console.WriteLine("User Path: " + userFolderPath);
-            Console.WriteLine("Assembly Path: " + assemblyPath);
-            Console.WriteLine("Trying to run it into " + defaultTerminal);
+            Console.WriteLine($"User Path: {userFolderPath}");
+            Console.WriteLine($"Assembly Path: {assemblyPath}");
+            Console.WriteLine($"Trying to run it into {defaultTerminal}");
 
             try
             {
                 string mapFileName = null;
                 try
                 {
-                    mapFileName = $"{assemblyPath}/caps-fix.rs";
+                    mapFileName = $"{assemblyPath}caps-fix.rs";
                     makeProcess(defaultTerminal, $"-c \"xkbcomp -xkb $DISPLAY '{mapFileName}'\"");
                     Console.WriteLine($"Map generated at {mapFileName}");
                 }
@@ -30,12 +30,11 @@ namespace caps_fix_linux
                     Console.WriteLine($"Ocurred an error: {e.Message}");
                     mapFileName = $"{userFolderPath}/caps-fix";
                     makeProcess(defaultTerminal, $"-c \"xkbcomp -xkb $DISPLAY '{mapFileName}'\"");
-                    Console.WriteLine($"Map generated at {mapFileName}");
+                    Console.WriteLine($"Map generated at: {mapFileName}");
                 };
 
                 string outFile = $"{mapFileName}";
                 byte count = 5;
-                Console.WriteLine($"Waiting for outFile");
                 while (count > 0)
                 {
                     if (File.Exists(mapFileName))
@@ -67,7 +66,8 @@ namespace caps_fix_linux
                     }
                     else
                     {
-                        Console.WriteLine($"{count} s..");
+                        if (count == 5) Console.WriteLine($"Waiting for output file.");
+                        Console.WriteLine($"{count} sec");
                         Thread.Sleep(10);
                         count--;
                     }
@@ -83,7 +83,7 @@ namespace caps_fix_linux
                     }
                     else
                     {
-                        Console.WriteLine($"Cant find {outFile} waiting 1 s");
+                        Console.WriteLine($"Cant find {outFile} waiting 1 sec");
                         Thread.Sleep(10);
                         count--;
                     }
@@ -101,7 +101,11 @@ namespace caps_fix_linux
 
         private static void makeProcess(string program, string args)
         {
-            Console.WriteLine($"Executing: {program} {args}");
+            var consoleColor = Console.ForegroundColor;
+            Console.Write($"Executing: ");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"{program} {args}");
+            Console.ForegroundColor = consoleColor;
             var psi = new ProcessStartInfo();
             psi.FileName = program;
             psi.Arguments = args;
