@@ -10,12 +10,30 @@ namespace capslock_fix
         {
             string userFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             string assemblyPath = AppContext.BaseDirectory.Replace(Assembly.GetExecutingAssembly().GetName().ToString(), "");
-            string defaultTerminal = "bash";
+            string defaultProcess = "sh";
             string programName = Assembly.GetExecutingAssembly().GetName().Name;
-            Console.WriteLine($" ---> User Path: {userFolderPath}");
-            Console.WriteLine($" ---> Assembly Path: {assemblyPath}");
-            Console.WriteLine($" ---> Trying to run it into {defaultTerminal}");
-            Console.WriteLine($" ---> Program name: {programName}");
+
+            var consoleColor = Console.ForegroundColor;
+            Console.Write($" ---> User Path: ");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine(userFolderPath);
+
+            Console.ForegroundColor = consoleColor;
+            Console.Write($" ---> Assembly Path: ");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine(assemblyPath);
+
+            Console.ForegroundColor = consoleColor;
+            Console.Write($" ---> Trying to run it into: ");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine(defaultProcess);
+
+            Console.ForegroundColor = consoleColor;
+            Console.Write($" ---> Program name: ");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine(programName);
+
+            Console.ForegroundColor = consoleColor;
 
             bool hasError = false;
             try
@@ -25,11 +43,14 @@ namespace capslock_fix
                 mapFileName = $"{assemblyPath}{programName}.rs";
                 if (File.Exists(mapFileName))
                 {
-                    Console.WriteLine($"Map file already exists! {mapFileName}");
+                    Console.Write($"Key map file source: ");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine(mapFileName);
+                    Console.ForegroundColor = consoleColor;
                 }
                 else
                 {
-                    makeProcess(defaultTerminal, $"-c \"xkbcomp -xkb $DISPLAY '{mapFileName}'\"");
+                    makeProcess(defaultProcess, $"-c \"xkbcomp -xkb $DISPLAY '{mapFileName}'\"");
                     Console.WriteLine($"Map generated at {mapFileName}");
                     while (count > 0)
                     {
@@ -75,7 +96,7 @@ namespace capslock_fix
                 {
                     if (File.Exists(mapFileName))
                     {
-                        makeProcess(defaultTerminal, $"-c \"xkbcomp -w 0 '{mapFileName}' $DISPLAY\"");
+                        makeProcess(defaultProcess, $"-c \"xkbcomp -w 0 '{mapFileName}' $DISPLAY\"");
                         break;
                     }
                     else
@@ -86,7 +107,6 @@ namespace capslock_fix
                     }
                 }
 
-
             }
             catch (System.Exception e)
             {
@@ -95,16 +115,14 @@ namespace capslock_fix
             }
             finally
             {
-                if (!hasError) 
+                if (!hasError)
                 {
-                    var consoleColor = Console.ForegroundColor;
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Success!");
                     Console.ForegroundColor = consoleColor;
                 }
                 else
                 {
-                    var consoleColor = Console.ForegroundColor;
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Ocurred some erros!");
                     Console.ForegroundColor = consoleColor;
@@ -126,5 +144,6 @@ namespace capslock_fix
             psi.CreateNoWindow = true;
             Process.Start(psi);
         }
+
     }
 }
