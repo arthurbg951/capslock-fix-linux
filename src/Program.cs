@@ -1,9 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace caps_fix_linux
+namespace capslock_fix
 {
     class Program
     {
@@ -12,23 +11,25 @@ namespace caps_fix_linux
             string userFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             string assemblyPath = AppContext.BaseDirectory.Replace(Assembly.GetExecutingAssembly().GetName().ToString(), "");
             string defaultTerminal = "bash";
+            string programName = Assembly.GetExecutingAssembly().GetName().Name;
             Console.WriteLine($"User Path: {userFolderPath}");
             Console.WriteLine($"Assembly Path: {assemblyPath}");
             Console.WriteLine($"Trying to run it into {defaultTerminal}");
+            Console.WriteLine($"Program name: {programName}");
 
             try
             {
                 string mapFileName = null;
                 try
                 {
-                    mapFileName = $"{assemblyPath}caps-fix.rs";
+                    mapFileName = $"{assemblyPath}{programName}.rs";
                     makeProcess(defaultTerminal, $"-c \"xkbcomp -xkb $DISPLAY '{mapFileName}'\"");
                     Console.WriteLine($"Map generated at {mapFileName}");
                 }
                 catch (System.Exception e)
                 {
                     Console.WriteLine($"Ocurred an error: {e.Message}");
-                    mapFileName = $"{userFolderPath}/caps-fix";
+                    mapFileName = $"{userFolderPath}/{programName}";
                     makeProcess(defaultTerminal, $"-c \"xkbcomp -xkb $DISPLAY '{mapFileName}'\"");
                     Console.WriteLine($"Map generated at: {mapFileName}");
                 };
