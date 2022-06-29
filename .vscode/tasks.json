@@ -1,0 +1,17 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "./build.sh",
+            "type": "shell",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "install",
+            "command": "./install.sh",
+            "type": "shell",
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}

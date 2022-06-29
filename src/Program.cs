@@ -12,91 +12,103 @@ namespace capslock_fix
             string assemblyPath = AppContext.BaseDirectory.Replace(Assembly.GetExecutingAssembly().GetName().ToString(), "");
             string defaultTerminal = "bash";
             string programName = Assembly.GetExecutingAssembly().GetName().Name;
-            Console.WriteLine($"User Path: {userFolderPath}");
-            Console.WriteLine($"Assembly Path: {assemblyPath}");
-            Console.WriteLine($"Trying to run it into {defaultTerminal}");
-            Console.WriteLine($"Program name: {programName}");
+            Console.WriteLine($" ---> User Path: {userFolderPath}");
+            Console.WriteLine($" ---> Assembly Path: {assemblyPath}");
+            Console.WriteLine($" ---> Trying to run it into {defaultTerminal}");
+            Console.WriteLine($" ---> Program name: {programName}");
 
+            bool hasError = false;
             try
             {
                 string mapFileName = null;
-                try
+                byte count = 5;
+                mapFileName = $"{assemblyPath}{programName}.rs";
+                if (File.Exists(mapFileName))
                 {
-                    mapFileName = $"{assemblyPath}{programName}.rs";
+                    Console.WriteLine($"Map file already exists! {mapFileName}");
+                }
+                else
+                {
                     makeProcess(defaultTerminal, $"-c \"xkbcomp -xkb $DISPLAY '{mapFileName}'\"");
                     Console.WriteLine($"Map generated at {mapFileName}");
-                }
-                catch (System.Exception e)
-                {
-                    Console.WriteLine($"Ocurred an error: {e.Message}");
-                    mapFileName = $"{userFolderPath}/{programName}";
-                    makeProcess(defaultTerminal, $"-c \"xkbcomp -xkb $DISPLAY '{mapFileName}'\"");
-                    Console.WriteLine($"Map generated at: {mapFileName}");
-                };
-
-                string outFile = $"{mapFileName}";
-                byte count = 5;
-                while (count > 0)
-                {
-                    if (File.Exists(mapFileName))
+                    while (count > 0)
                     {
-                        using (StreamReader sr = new StreamReader(mapFileName))
+                        if (File.Exists(mapFileName))
                         {
-                            StringBuilder sb = new StringBuilder();
-                            string line = sr.ReadLine();
-                            while (line != null)
+                            using (StreamReader sr = new StreamReader(mapFileName))
                             {
-                                if (!line.Contains("key <CAPS>"))
+                                StringBuilder sb = new StringBuilder();
+                                string line = sr.ReadLine();
+                                while (line != null)
                                 {
-                                    sb.AppendLine(line);
-                                }
-                                else
-                                {
-                                    sb.AppendLine("key <CAPS> { repeat=no, type[group1]=\"ALPHABETIC\", symbols[group1]=[ Caps_Lock, Caps_Lock], actions[group1]=[ LockMods(modifiers=Lock), Private(type=3,data[0]=1,data[1]=3,data[2]=3)] };");
-                                    while (!line.Contains(";"))
+                                    if (!line.Contains("key <CAPS>"))
                                     {
-                                        line = sr.ReadLine();
+                                        sb.AppendLine(line);
                                     }
+                                    else
+                                    {
+                                        sb.AppendLine("key <CAPS> { repeat=no, type[group1]=\"ALPHABETIC\", symbols[group1]=[ Caps_Lock, Caps_Lock], actions[group1]=[ LockMods(modifiers=Lock), Private(type=3,data[0]=1,data[1]=3,data[2]=3)] };");
+                                        while (!line.Contains(";"))
+                                        {
+                                            line = sr.ReadLine();
+                                        }
+                                    }
+                                    line = sr.ReadLine();
                                 }
-                                line = sr.ReadLine();
+                                Console.WriteLine($"Writing the changed map at {mapFileName}");
+                                File.WriteAllText(mapFileName, sb.ToString());
                             }
-                            Console.WriteLine($"Writing the changed map at {outFile}");
-                            File.WriteAllText(outFile, sb.ToString());
+                            break;
                         }
-                        break;
-                    }
-                    else
-                    {
-                        if (count == 5) Console.WriteLine($"Waiting for output file.");
-                        Console.WriteLine($"{count} sec");
-                        Thread.Sleep(10);
-                        count--;
+                        else
+                        {
+                            if (count == 5) Console.WriteLine($"Waiting for output file.");
+                            Console.WriteLine($"{count} sec");
+                            Thread.Sleep(10);
+                            count--;
+                        }
                     }
                 }
 
                 count = 5;
                 while (count > 0)
                 {
-                    if (File.Exists(outFile))
+                    if (File.Exists(mapFileName))
                     {
-                        makeProcess(defaultTerminal, $"-c \"xkbcomp -w 0 '{outFile}' $DISPLAY\"");
+                        makeProcess(defaultTerminal, $"-c \"xkbcomp -w 0 '{mapFileName}' $DISPLAY\"");
                         break;
                     }
                     else
                     {
-                        Console.WriteLine($"Cant find {outFile} waiting 1 sec");
+                        Console.WriteLine($"Cant find {mapFileName} waiting 1 sec");
                         Thread.Sleep(10);
                         count--;
                     }
                 }
+
+
             }
             catch (System.Exception e)
             {
                 Console.WriteLine(e.Message);
+                hasError = true;
             }
             finally
             {
-                Console.WriteLine("You can try to use your Caps Lock as you want. ;)");
+                if (!hasError) 
+                {
+                    var consoleColor = Console.ForegroundColor;
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Success!");
+                    Console.ForegroundColor = consoleColor;
+                }
+                else
+                {
+                    var consoleColor = Console.ForegroundColor;
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Ocurred some erros!");
+                    Console.ForegroundColor = consoleColor;
+                }
             }
         }
 
