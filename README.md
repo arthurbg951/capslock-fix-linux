@@ -28,3 +28,7 @@ chmod +x ./install.sh -->
 ## Recomendations
 
 If all this stuff dont make this application work after reboot your machine i recommend to download gnome-teak-tool then go to Startup Applications and add it on startup. It probably wiil work now ...
+
+## Binary
+
+If you just wanna download the program, download <a href="https://github.com/arthurbg951/capslock-fix-linux/blob/main/caps-fix-beta-v1.0.6.zip">here</a>.
