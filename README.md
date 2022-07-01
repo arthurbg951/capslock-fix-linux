@@ -1,11 +1,11 @@
-## What is the purpose of the program?
+## What is this program?
 
-This program just fix the Caps Lock key Delay on linux.
+This program just fix the Caps Lock key Delay on linux machines.
 If you dont wanna use shift key this program will help you.
 
 ## Require
 
-You will need <a href="https://dotnet.microsoft.com/en-us/download">dotnet-sdk-6.0</a> on your machine to use build script
+You will need <a href="https://dotnet.microsoft.com/en-us/download">dotnet-sdk-6.0</a> on your machine to use build script.
 
 ## Build
 
@@ -21,14 +21,16 @@ Then run the script:
 
     $ ./build.sh
 
-<!-- Give permission to install.sh script with if you wanna install the programm in your machine and add it to startup: 
+You can also use install script to auto compile and install in your machine locally with:
 
-chmod +x ./install.sh -->
+    $ chmod +x ./install.sh
+
+    $ ./install.sh
 
 ## Recomendations
 
-If all this stuff dont make this application work after reboot your machine i recommend to download gnome-teak-tool then go to Startup Applications and add it on startup. It probably wiil work now ...
+This application is working fine at local instalation. Install for all users may not work as expected at this moment.
 
-## Binary
+## Download
 
-If you just wanna download the program, click <a href="https://github.com/arthurbg951/capslock-fix-linux/blob/main/caps-fix-beta-v1.0.6.zip">here</a>.
+If you just wanna use the program, download <a href="https://github.com/arthurbg951/capslock-fix-linux/blob/main/caps-fix-beta-v1.0.6.zip">here</a>.
