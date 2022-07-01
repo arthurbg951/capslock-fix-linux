@@ -6,8 +6,13 @@ namespace capslock_fix
 {
     class Program
     {
+        public static bool hasError = false;
+        public static StringBuilder errors = new StringBuilder();
+
         static void Main()
         {
+            // Put a delay at startup
+            Thread.Sleep(1000);
             string userFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             string assemblyPath = AppContext.BaseDirectory.Replace(Assembly.GetExecutingAssembly().GetName().ToString(), "");
             string defaultProcess = "sh";
@@ -35,11 +40,15 @@ namespace capslock_fix
 
             Console.ForegroundColor = consoleColor;
 
-            bool hasError = false;
             try
             {
                 string mapFileName = null;
                 byte count = 5;
+
+                // tests to error
+                // makeProcess("echo", "helooo");
+                // makeProcess("xkbcomp", "-help > errors.txt");
+
                 mapFileName = $"{assemblyPath}{programName}.rs";
                 if (File.Exists(mapFileName))
                 {
@@ -108,14 +117,14 @@ namespace capslock_fix
                 }
 
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                hasError = true;
+                Program.hasError = true;
             }
             finally
             {
-                if (!hasError)
+                if (!Program.hasError)
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Success!");
@@ -126,6 +135,7 @@ namespace capslock_fix
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Ocurred some erros!");
                     Console.ForegroundColor = consoleColor;
+                    File.WriteAllText($"{programName}-erros.log", Program.errors.ToString());
                 }
             }
         }
@@ -137,12 +147,28 @@ namespace capslock_fix
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($"{program} {args}");
             Console.ForegroundColor = consoleColor;
-            var psi = new ProcessStartInfo();
-            psi.FileName = program;
-            psi.Arguments = args;
-            psi.UseShellExecute = false;
-            psi.CreateNoWindow = true;
-            Process.Start(psi);
+            var psi = new Process();
+            psi.StartInfo.FileName = program;
+            psi.StartInfo.Arguments = args;
+            psi.StartInfo.UseShellExecute = false;
+            psi.StartInfo.CreateNoWindow = true;
+            psi.StartInfo.RedirectStandardError = true;
+            psi.StartInfo.RedirectStandardOutput = true;
+            psi.OutputDataReceived += senderEvent;
+            psi.Start();
+            psi.BeginErrorReadLine();
+            psi.BeginOutputReadLine();
+            psi.WaitForExit();
+        }
+
+        private static void senderEvent(object sender, DataReceivedEventArgs args)
+        {
+            if (args.Data != null)
+            {
+                Console.WriteLine(args.Data);
+                Program.hasError = true;
+                Program.errors.AppendLine(args.Data);
+            }
         }
 
     }
