@@ -31,4 +31,4 @@ If all this stuff dont make this application work after reboot your machine i re
 
 ## Binary
 
-If you just wanna download the program, download <a href="https://github.com/arthurbg951/capslock-fix-linux/blob/main/caps-fix-beta-v1.0.6.zip">here</a>.
+If you just wanna download the program, click <a href="https://github.com/arthurbg951/capslock-fix-linux/blob/main/caps-fix-beta-v1.0.6.zip">here</a>.
