@@ -15,11 +15,11 @@ git clone https://github.com/arthurbg951/capslock-fix-linux.git
 
 Give permission to build.sh script with:
 
-chmod +x ./build.sh
+    $ chmod +x ./build.sh
 
 Then run the script:
 
-./build.sh
+    $ ./build.sh
 
 <!-- Give permission to install.sh script with if you wanna install the programm in your machine and add it to startup: 
 
