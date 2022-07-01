@@ -11,7 +11,7 @@ You will need <a href="https://dotnet.microsoft.com/en-us/download">dotnet-sdk-6
 
 Clone this repository with:
 
-git clone https://github.com/arthurbg951/capslock-fix-linux.git
+    $ git clone https://github.com/arthurbg951/capslock-fix-linux.git
 
 Give permission to build.sh script with:
 
