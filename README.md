@@ -33,4 +33,4 @@ This application is working fine at local instalation. Install for all users may
 
 ## Download
 
-If you just wanna use the program, download <a href="https://github.com/arthurbg951/capslock-fix-linux/blob/main/caps-fix-beta-v1.0.6.zip">here</a>.
+If you just wanna use the program, download <a href="https://github.com/arthurbg951/capslock-fix-linux/releases">here</a>.
